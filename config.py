@@ -8,7 +8,7 @@ servers = {
     "/tg/Station Bagil": ["Bagil Station", "tgstation", "bagil.tgstation13.org", 2337, "fetch"],
     "/tg/Station Sybil": ["Sybil Station", "tgstation", "sybil.tgstation13.org", 1337, "fetch"],
     "/tg/Station Terry": ["Terry Station", "tgstation", "terry.tgstation13.org", 3337, "fetch"],
-    "TerraGov Marine Corps": ["TGMC", "tgmc", "tgmc.tgstation13.org", 5337, "fetch"],
+    "TerraGov Marine Corps": ["TerraGov Marine Corps", "tgstation", "tgmc.tgstation13.org", 5337, "fetch"],
     "[99% FREE LAG] Convict Conclave": ["Convict Conclave", "ss13"],
     "[ss13.ru] Yellow Circus": ["Yellow Circus", "ss13"],
     "Persistence Station 13": ["Persistence Station", "persistence"],
@@ -28,5 +28,6 @@ servers = {
     "ss13": ["Unknown Server", "ss13"]
 }
 
-# formula: "Server Name": ["Big text name", "icon", "ip", port]
+# formula: "Server Name": ["Big text name", "icon", "ip", port, req type]
 client_id = "440289271580983308"
+LAZYLOGLEVEL = 3 #errors:1, info:2, spaminfo:3
