@@ -117,24 +117,28 @@ while True:
 						activity["instance"] = False
 				
 				if server[0] in ["Colonial Marines"]:
-					activity["state"] = status["mode"]
+					activity["state"] = "Gamemode: "+status["mode"]
 					activity["party_size"] = [int(status["players"])]+[300]
 					activity["start"] = int(time.time())-util.get_sec(*status["stationtime"].split(":"))
+					activity["state"] = "Started"
 
 				if server[0] in ["Baystation 12"]:
-					activity["state"] = status["map"]
+					activity["state"] = "Map: "+status["map"]
 					activity["party_size"] = [int(status["players"])]+[100]
 					activity["start"] = int(time.time())-util.get_sec(*status["roundduration"].split(":"))
+					activity["state"] = "Started"
 
 				if server[0] in ["Paradise Station"]:
-					activity["state"] = status["map_name"]
+					activity["state"] = "Map: "+status["map_name"]
 					activity["party_size"] = [int(status["players"])]+[250]
 					activity["start"] = int(time.time())-util.get_sec(*status["roundtime"].split(":"))
+					activity["state"] = "Started"
 
 				if server[0].startswith("Goonstation"):
-					activity["state"] = status["map_name"]#+", "+status["mode"]
+					activity["state"] = "Map: "+status["map_name"]#+", "+status["mode"]
 					activity["party_size"] = [int(status["players"])]+[200]
-					activity["start"] = int(time.time())-int(status["elapsed"])				
+					activity["start"] = int(time.time())-int(status["elapsed"])
+					activity["state"] = "Started"		
 
 			except Exception as E:
 				print("Metainfo ERROR: "+str(E))
