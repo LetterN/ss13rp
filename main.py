@@ -75,18 +75,17 @@ while True:
 					if LAZYLOGLEVEL == 3:
 						print("Status (fetch): "+str(status))
 
-				if server[0] in ["Bagil Station", "Terry Station", "Sybil Station", "Citadel Station", "FTL13", "TerraGov Marine Corps"]:
+				if server[0] in ["Bagil Station", "Terry Station", "Sybil Station", "Citadel Station", "FTL13", "TerraGov Marine Corps", "Hippie Station", "BeeStation", "Yogstation 13"]:
 					activity["start"] = int(time.time())-int(status["round_duration"])
 					activity["join"] = str(server[2])+":"+str(server[3]) #idea: when someone clicks join, they will get this link
 					#activity["spectate"] = server[3]+":"+str(server[3]) #no need, do it ingame
 
 					if json_obj_exist(status, "round_id"): #if there is status
 						activity["details"] = "Map: "+status["map_name"]+" | Gamemode: "+status["mode"]+" | Round id: "+str(status["round_id"])
-						activity["party_id"] = str(status["round_id"]) + " " + status["map_name"]
-						#if json_obj_exist(status, "revision"):
-						#	activity["party_id"] = str(status["round_id"])+" | "+status["map_name"]+" | "+status["revision"]+" | "+server[0] #making the probability of it looping very low
-						#else:
-						#	activity["party_id"] = str(status["round_id"])+" | "+status["map_name"]+" | "+server[0]
+						if json_obj_exist(status, "revision"):
+							activity["party_id"] = str(status["round_id"])+" | "+status["map_name"]+" | "+status["revision"]+" | "+server[0] #making the probability of it looping very low
+						else:
+							activity["party_id"] = str(status["round_id"])+" | "+status["map_name"]+" | "+server[0]
 					else:
 						activity["details"] = "Map: "+status["map_name"]+" | Gamemode: "+status["mode"]
 						activity["party_id"] = server[0]+" | " + status["map_name"] + status["mode"] #need something random enough to put in here so they are on the same party
@@ -116,25 +115,26 @@ while True:
 					elif actualstatus == 4:
 						activity["state"] = "Round ended!"
 						activity["instance"] = False
+				
+				if server[0] in ["Colonial Marines"]:
+					activity["state"] = status["mode"]
+					activity["party_size"] = [int(status["players"])]+[300]
+					activity["start"] = int(time.time())-util.get_sec(*status["stationtime"].split(":"))
 
 				if server[0] in ["Baystation 12"]:
-					activity["details"] = "Map: "+status["map"]+" | Players"+str(status["players"])
-				elif server[0] in ["Goonstation #2","Goonstation RP #1", "Hippie Station", "BeeStation", "Yogstation 13"]:
-					activity["details"] = "Map: "+status["map_name"]+" | Players"+str(status["players"])
-				elif server[0] in ["VOREStation"]: #apparently this fucker dosen't return map data
-					activity["details"] = "Gamemode: "+status["mode"]+" | Players"+status["players"]
+					activity["state"] = status["map"]
+					activity["party_size"] = [int(status["players"])]+[100]
+					activity["start"] = int(time.time())-util.get_sec(*status["roundduration"].split(":"))
 
-				if server[0] in ["Goonstation #2","Goonstation RP #1"]:
-					activity["start"] = int(time.time())-int(status["elapsed"])
-				elif server[0] in ["Hippie Station", "BeeStation", "Yogstation 13"]:
-					activity["start"] = int(time.time())-int(status["round_duration"])
-				elif server[0] in ["VOREStation"]: #andd also it fucking returns time (in string) not in unicode-format!
-					ittimetostop = status["roundduration"]
-					ittimetostop = ittimetostop.split(':')
-					if len(ittimetostop) >= 3:	#hr, min, sec
-						activity["start"] = int(time.time())-(((int(ittimetostop[0])*60)*60) + (int(ittimetostop[1])*60) + int(ittimetostop[2]))
-					else:					#min, sec
-						activity["start"] = int(time.time())-((int(ittimetostop[0])*60) + int(ittimetostop[1]))
+				if server[0] in ["Paradise Station"]:
+					activity["state"] = status["map_name"]
+					activity["party_size"] = [int(status["players"])]+[250]
+					activity["start"] = int(time.time())-util.get_sec(*status["roundtime"].split(":"))
+
+				if server[0].startswith("Goonstation"):
+					activity["state"] = status["map_name"]#+", "+status["mode"]
+					activity["party_size"] = [int(status["players"])]+[200]
+					activity["start"] = int(time.time())-int(status["elapsed"])				
 
 			except Exception as E:
 				print("Metainfo ERROR: "+str(E))
